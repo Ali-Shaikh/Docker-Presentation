@@ -1,0 +1,16 @@
+version: "3"
+services:
+  web:
+    container_name: 7.2-apache
+    image: webdevops/php-apache:alpine-php7
+    volumes:
+      - ./:/app
+    ports:
+      - 9000:80
+  nginx:
+    container_name: 7.2-nginx
+    image: webdevops/php-nginx:alpine-php7
+    volumes:
+      - ./:/app
+    ports:
+      - 9001:80

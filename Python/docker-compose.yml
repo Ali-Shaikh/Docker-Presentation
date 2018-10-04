@@ -1,0 +1,18 @@
+version: '3'
+services:
+  python3:
+    container_name: python3-01
+    image: alishaikh/docker-python3.7:withGit
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+  python2:
+    container_name: python2-01
+    image: alishaikh/docker-python2.7:withGit
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+volumes:
+    persistent:

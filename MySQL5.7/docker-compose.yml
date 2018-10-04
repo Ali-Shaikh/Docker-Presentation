@@ -1,0 +1,24 @@
+version: "3"
+services:
+    db:
+        container_name: 'mysql-xt'
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: 'my_db'
+        volumes:
+            - ./volumes/mysql:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: 'phpmyadmin-1'
+        ports:
+            - 8000:80
+        restart: always
+        links:
+            - db
+        depends_on:
+            - db
+volumes:
+    persistent:

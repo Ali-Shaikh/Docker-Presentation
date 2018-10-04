@@ -1,0 +1,24 @@
+version: "3"
+services:
+    db:
+        container_name: 'mdb-1'
+        image: mariadb:10.0
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_DATABASE: 'my_db'
+        # volumes:
+        #     - ./volumes/mdb:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: 'phpmyadmin-2'
+        ports:
+            - 8001:80
+        restart: always
+        links:
+            - db
+        depends_on:
+            - db
+volumes:
+    persistent:

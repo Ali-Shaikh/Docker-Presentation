@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  db:
+    container_name: pgsql-01
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+  adminer:
+    container_name: adminer-01
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -1,0 +1,53 @@
+version: '2'
+services:
+  gibbs-server:
+    container_name: gibbs-worker
+    image: alishaikh/phpcli-pdo-mysql-pgsql:gibbs7
+#    ports:
+#      - 8000:8000
+    volumes:
+      - .:/app
+#      - /app/vendor
+#    depends_on:
+#      - postgres
+    environment:
+      PGSQL_HOST: 'gibbs-pgsql'
+      PGSQL_DB: 'gibbs'
+      PGSQL_USER: 'root'
+      PGSQL_PASSWORD: ''
+      MYSQL_HOST: 'gibbs-mysql'
+      MYSQL_DB: 'gibbs'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'root'
+      DATABASE_URL: postgres://root@postgres/gibbs
+      OS_ENV: linux
+    stdin_open: true
+    tty: true
+  mysql:
+    image: mysql:5.7
+    container_name: 'gibbs-mysql'
+    ports:
+        - "3306:3306"
+    command: mysqld --max_allowed_packet=512M --sql_mode="NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" --character-set-server=utf8 --collation-server=utf8_general_ci
+    environment:
+          MYSQL_ROOT_PASSWORD: 'root'
+          MYSQL_DATABASE: 'gibbs'
+    volumes:
+          - ./docker-data/mysql:/var/lib/mysql
+          - ./db_dump/MySQL:/docker-entrypoint-initdb.d
+          - persistent:/var/lib/mysql
+  postgres:
+    container_name: 'gibbs-pgsql'
+    image: postgres:9.6.2-alpine
+    ports:
+          - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: gibbs
+      PGDATA: /tmp
+    volumes:
+         - ./docker-data/pgsql:/var/lib/postgresql/data
+         - ./db_dump/PgSQL:/docker-entrypoint-initdb.d
+         - persistent:/var/lib/postgresql/data
+volumes:
+    persistent:
